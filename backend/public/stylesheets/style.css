@@ -14,8 +14,6 @@
   margin-left: 1%;
   margin-right: 1%;
   width: 20% !important;
-  /* border-radius: .375rem;
-  border: 1px solid #ced4da; */
   display: inline-flex !important
 } 
 .card-shadow {
@@ -43,7 +41,5 @@
   margin-left: 1%;
   margin-right: 1%;
   width: 100% !important;
-  /* border-radius: .375rem;
-  border: 1px solid #ced4da; */
   display: inline-flex !important
 } 
