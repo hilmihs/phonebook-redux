@@ -4,9 +4,20 @@ const { Response } = require('../helpers/util')
 var models = require('../models/index')
 /* GET users listing. */
 router.get('/phonebooks/', async function (req, res, next) {
+  const {name, phone} = req.query
+  let wheres = {}
+  let search = {}
+  if (req.query) {
+    if (name) {
+      search['name'] = name
+    }
+    if (phone) {
+      search['phone'] = phone
+    }
+  wheres['where'] = search
+  }
   try {
-    const data = await models.Phonebook.findAll({
-    })
+    const data = await models.Phonebook.findAll(wheres)
     res.json(data)
   } catch (e) {
     res.status(500).json(new Response(e,"UNSUCCESFUL"))
