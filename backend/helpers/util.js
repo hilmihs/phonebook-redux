@@ -1,3 +1,6 @@
+
+
+
 class Response {
     constructor(data, status = "SUCCESS") {
         this.status = status
@@ -6,5 +9,7 @@ class Response {
 
     }
 }
+
+
 
 module.exports = { Response }

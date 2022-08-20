@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const { Response } = require('../helpers/util')
 var models = require('../models/index')
+
 /* GET users listing. */
 router.get('/phonebooks/', async function (req, res, next) {
   const {name, phone} = req.query
@@ -18,7 +19,7 @@ router.get('/phonebooks/', async function (req, res, next) {
   }
   try {
     const data = await models.Phonebook.findAll(wheres)
-    res.json(data)
+    res.json(new Response(data))
   } catch (e) {
     res.status(500).json(new Response(e,"UNSUCCESFUL"))
   }
@@ -29,7 +30,7 @@ router.get('/phonebooks/', async function (req, res, next) {
 router.post('/phonebooks/', async function (req, res, next) {
   try {
     const { name, phone } = req.body
-    const data = await models.Phonebook.create({ name, phone})
+    const data = await models.Phonebook.create({ name, phone })
     res.json(new Response(data))
   } catch (e) {
     res.status(500).json(new Response(e,"UNSUCCESFUL"))
@@ -66,7 +67,7 @@ router.delete('/phonebooks/:id', async function (req, res, next) {
         id: req.params.id
       }
     })
-    res.json(new Response(deletedRows, deletedRows && data ? "SUCCESS" :"UNSUCCESFUL"))
+    res.json(new Response(deletedRows))
   } catch (e) {
     res.status(500).json(new Response(e,"UNSUCCESFUL"))
     console.log(e)

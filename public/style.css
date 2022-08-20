@@ -4,6 +4,7 @@
   .add-button {
     margin-top: 2%;
     margin-left: 1%;
+    display: table;
   }
   
   .name-label {
@@ -35,6 +36,8 @@
   
   .table-list {
     margin-top: 3%;
+    
+    
   }
   
   .edit-input {
@@ -48,4 +51,8 @@
     margin-top: 5%;
     box-sizing: unset;
     padding-right: 1rem;
+  }
+
+  .card-position {
+    display: flex;
   }

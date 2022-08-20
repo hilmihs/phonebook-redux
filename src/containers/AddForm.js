@@ -1,7 +1,9 @@
 import { Component } from 'react';
 import * as Icon from 'react-bootstrap-icons';
+import { connect } from "react-redux"
+import { addPhonebook } from '../actions/phonebooks'
 
-export default class AddForm extends Component {
+class AddForm extends Component {
     constructor(props) {
         super(props);
 
@@ -13,11 +15,11 @@ export default class AddForm extends Component {
     }
     render () {
         return (
-            <div className="card card-shadow">
-                <div className="card-header">
+            <div className="card card-shadow ">
+                <div className="card-header card-position">
                     Adding Form
                 </div>
-                <div className="card-body">
+                <div className="card-body card-position">
                     <label className="name-label" htmlFor="name-add">Name</label>
                     <input type="text" id="name-add" name="name-add" className="form-control name-input" placeholder="name" />
                         <label className="name-label" htmlFor="phone-add">Phone</label>
@@ -34,3 +36,11 @@ export default class AddForm extends Component {
     }
     
 }
+
+const mapStateToProps = (state) => ({ phonebooks: state.phonebooks })
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    add: (name, phone) => dispatch(addPhonebook(name, title))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddForm)

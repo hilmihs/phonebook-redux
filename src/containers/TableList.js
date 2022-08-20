@@ -1,20 +1,25 @@
 import React, { Component } from "react"
 import ListEdit from "./ListEdit"
-import ListRows from "./ListRows"
+import ListRows from "./Phonebook"
 import { connect } from "react-redux"
 import { loadPhonebook } from '../actions/phonebooks'
 
 
-export default class TableList extends Component {
-
+class TableList extends Component {
+    constructor (props) {
+        super(props)
+        }
     componentDidMount(){
         // this.props.load()
     }
     render() {
-        const rows = [].map(item => {
+        const rows = this.props.data.map(item => {
             <ListRows 
-                name={item.name}
-                phone={item.phone}
+                contact={item}
+                edittoggle={this.props.toggleEditForm}
+                remove={this.props.removeContact}
+                edit={this.props.editContact}
+                editstatus={this.props.showEditForm}
                  />
         })
         // const editRows = this.props.phonebooks.map(item => {
@@ -48,4 +53,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     load: () => dispatch(loadPhonebook())
 })
 
-// export default connect(mapStateToProps, mapDispatchToProps)(TableList)
+export default connect(mapStateToProps, mapDispatchToProps)(TableList)

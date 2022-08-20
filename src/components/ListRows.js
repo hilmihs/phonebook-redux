@@ -4,7 +4,7 @@ import { faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faPencil, faTrashCan)
 
-const ListRows = () => {
+const ListRows = (props) => {
     return (
          <tr>
         <td scope="row">
@@ -21,6 +21,7 @@ const ListRows = () => {
           <button type="button" class="btn btn-danger"><FontAwesomeIcon icon="trash-can" /> delete</button>
         </td>
       </tr>
+      
     )
 }
 

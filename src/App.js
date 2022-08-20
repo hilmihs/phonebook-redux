@@ -1,15 +1,16 @@
 import './App.css';
 import Layout from './components/Layout';
-// import { configureStore, applyMiddleware } from 'redux'
-// import { Provider } from 'react-redux'
-// import thunk from 'redux-thunk';
-// import rootReducer from './reducers';
+import { configureStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk';
+import rootReducer from './reducers';
 
+const store = configureStore(rootReducer, applyMiddleware(thunk))
 function App() {
   return (
-    <div className="App">
+    <Provider store={store}>
       <Layout />
-    </div>
+    </Provider>
   );
 }
 
