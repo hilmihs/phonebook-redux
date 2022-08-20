@@ -1,8 +1,6 @@
 import React, { Component, useEffect } from "react"
 import ListEdit from "./ListEdit"
-import ListRows from "./Phonebook"
 import { connect, useDispatch, useSelector } from "react-redux"
-import { loadPhonebook } from '../actions/phonebooks'
 import { readPhonebook, selectPhonebooks } from "../features/phonebook/phonebookSlice"
 import PhonebookItem from "./PhonebookItem"
 
