@@ -7,12 +7,11 @@ import PhonebookItem from "./PhonebookItem"
 export default function PhonebookList() {
     const phonebooks = useSelector(selectPhonebooks)
     const dispatch = useDispatch()
-
+  
     useEffect(() => {
         dispatch(readPhonebook())
-
+       
     }, [dispatch])
-
     return (
         <table id="tabel_masuk" className="table table-hover table-striped table-list" >
         <thead>
@@ -29,7 +28,9 @@ export default function PhonebookList() {
             key={item.id}
             phonebook={item}
             no={index + 1}
-            />)}
+            />
+            
+            )}
         </tbody>
     </table>
     )

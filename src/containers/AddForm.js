@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { useDispatch } from 'react-redux';
-import * as Icon from 'react-bootstrap-icons';
+
 import { connect } from "react-redux"
 import { updatePhonebook } from "../features/phonebook/phonebookSlice";
 
@@ -98,10 +98,3 @@ export default function addForm (props) {
     
 // }
 
-// const mapStateToProps = (state) => ({ phonebooks: state.phonebooks })
-
-// const mapDispatchToProps = (dispatch, ownProps) => ({
-//     add: (name, phone) => dispatch(addPhonebook(name, title))
-// })
-
-// export default connect(mapStateToProps, mapDispatchToProps)(AddForm)

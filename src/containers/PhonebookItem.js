@@ -5,15 +5,13 @@ import { connect } from "react-redux"
 import { removePhonebook, resendPhonebook, updatePhonebook } from "../features/phonebook/phonebookSlice";
 
 export default function PhonebookItem (props) {
-
     const dispatch = useDispatch();
-
+  
     const [isEdit, setIsEdit] = useState(false)
     const [phonebook, setPhonebook] = useState({
         name: props.phonebook.name,
         phone: props.phonebook.phone
     })
-
     const handleInputChange = (event) => {
         const target = event.target
         const value = target.value;
@@ -47,6 +45,7 @@ export default function PhonebookItem (props) {
             </tr >
         )
     } else {
+        return (
         <tr>
         <td>{props.no}</td>
         <td>{props.phonebook.name}</td>
@@ -61,5 +60,6 @@ export default function PhonebookItem (props) {
             </button>
         </td>
     </tr >
+    )
     }
 }

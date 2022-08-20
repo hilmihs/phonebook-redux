@@ -5,3 +5,4 @@ export const request = axios.create({
     timeout: 1000,
     //headers: { 'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')).token}` }
 });
+

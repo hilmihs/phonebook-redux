@@ -1,6 +1,19 @@
 import React, { useState} from "react";
 import { useDispatch } from "react-redux";
 import { createPhonebook } from "../features/phonebook/phonebookSlice";
+import * as Icon from 'react-bootstrap-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faPlus)
+const AddButton = () => {
+    return (
+        <button className="btn btn-primary add-button">
+        <FontAwesomeIcon icon='plus' /> add
+        </button>
+    )
+}
 
 export default function PhonebookForm() {
 
@@ -8,8 +21,8 @@ export default function PhonebookForm() {
     
     const [isAdd, setIsAdd] = useState(false)
     const [phonebook, setPhonebook] = useState({
-        name: props.phonebook.name,
-        phone: props.phonebook.phone
+        name: '',
+        phone: ''
     })
 
     const handleInputChange = (event) => {
@@ -25,8 +38,8 @@ export default function PhonebookForm() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        dispatch(createPhonebook(phonebook))
-        setPhonebook('')
+        dispatch(createPhonebook(phonebook.name, phonebook.phone))
+        setPhonebook({name: '', phone: ''})
     }
 
     if (isAdd) {

@@ -18,7 +18,8 @@ export const readPhonebook = createAsyncThunk(
     async () => {
         try {
             const { data } = await API.read();
-            if (data.success) {
+            console.log(data)
+            if (data.status == 'SUCCESS') {
                 return data.data.map(item => {
                     item.sent = true
                     return item
@@ -27,7 +28,7 @@ export const readPhonebook = createAsyncThunk(
                 return []
             }
         } catch (error) {
-            return []
+            return [error]
         }
     }
 );
@@ -36,8 +37,9 @@ export const createPhonebookAsync = createAsyncThunk(
     CREATE_PHONEBOOK,
     async ({ id, name, phone }) => {
         try {
-            const { data } = await API.create(id, name, phone);
-            if (data.success) {
+            console.log(id, name, phone)
+            const { data } = await API.create(name, phone);
+            if (data.status == 'SUCCESS') {
                 return { id, phonebook: data.data }
             }
         } catch (error) {
@@ -51,7 +53,7 @@ export const resendPhonebook = createAsyncThunk(
     async ({ id, name, phone }) => {
         try {
             const { data } = await API.create(name, phone);
-            if (data.success) {
+            if (data.status == 'SUCCESS') {
                 return { id, phonebook: data.data }
             }
         } catch (error) {
@@ -65,7 +67,7 @@ export const updatePhonebook = createAsyncThunk(
     async ({ id, name, phone }) => {
         try {
             const { data } = await API.update(id, name, phone);
-            if (data.success) {
+            if (data.status == 'SUCCESS') {
                 return data.data
             }
         } catch (error) {
@@ -79,8 +81,9 @@ export const removePhonebook = createAsyncThunk(
     async (id) => {
         try {
             const { data } = await API.remove(id);
-            if (data.success) {
-                return data.data
+            console.log(data, 'delete')
+            if (data.status = 'SUCCESS') {
+                return { id, phonebook: data.data }
             }
         } catch (error) {
             console.log(error, 'gagal')
@@ -110,11 +113,14 @@ export const phonebookSlice = createSlice({
                 state.status = 'loading'
             })
             .addCase(readPhonebook.fulfilled, (state, action) => {
-                state.status = 'idle',
+                    state.status = 'idle';
                     state.phonebooks = action.payload
+                    console.log(action.payload, 'payload', state.phonebooks, 'state phonebook =<')
+                    
             })
             .addCase(createPhonebookAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
+                console.log(state.phonebooks , action.payload, 'create dan payload')
                 if (action.payload.phonebook) {
                     state.phonebooks = state.phonebooks.map(item => {
                         if (item.id === action.payload.id) {
@@ -122,6 +128,7 @@ export const phonebookSlice = createSlice({
                         }
                         return item
                     })
+                    console.log(state.phonebooks, 'hasil akhir mapping')
                 } else {
                     state.phonebooks = state.phonebooks.map(item => {
                         if (item.id === action.payload.id) {
@@ -149,6 +156,13 @@ export const phonebookSlice = createSlice({
                     }
                     return item
                 })
+            })
+            .addCase(removePhonebook.fulfilled, (state, action) => {
+                state.status = 'idle';
+                console.log(state.phonebooks, action.payload.id)
+                if (action.payload.phonebook) {
+                    state.phonebooks = state.phonebooks.filter(item => item.id !== action.payload.id)
+                }
             })
     }
 })

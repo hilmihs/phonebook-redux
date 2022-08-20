@@ -2,9 +2,8 @@ import { render } from "@testing-library/react"
 import React from "react"
 import Header from "../../components/Header"
 import SearchForm from "../../containers/SearchForm"
-import TableList from "../../containers/PhonebookList"
 import PhonebookForm from "../../containers/PhonebookForm"
-import PhonebookItem from "../../containers/PhonebookItem"
+import PhonebookList from "../../containers/PhonebookList"
 export default function Layout (props) {
    
         return (
@@ -14,7 +13,7 @@ export default function Layout (props) {
                 <Header />
                 <PhonebookForm />
                 <SearchForm />
-                <PhonebookItem/>
+                <PhonebookList/>
                 </div>
             </React.Fragment>
         )
