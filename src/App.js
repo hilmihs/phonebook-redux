@@ -1,17 +1,11 @@
-import './App.css';
-import Layout from './components/Layout';
-import { configureStore, applyMiddleware } from 'redux'
-import { Provider } from 'react-redux'
-import thunk from 'redux-thunk';
-import rootReducer from './reducers';
+import React from "react";
+import Layout from "./features/phonebook/Layout"
 
-const store = configureStore(rootReducer, applyMiddleware(thunk))
+
 function App() {
-  return (
-    <Provider store={store}>
-      <Layout />
-    </Provider>
-  );
+    return (
+        <React.Fragment>
+            <Layout />
+        </React.Fragment>
+    )
 }
-
-export default App;

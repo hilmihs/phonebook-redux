@@ -1,10 +1,10 @@
 import { render } from "@testing-library/react"
 import React from "react"
 import Header from "../../components/Header"
-import AddButton from "../../components/AddButton"
-import AddForm from "../../containers/AddForm"
 import SearchForm from "../../containers/SearchForm"
 import TableList from "../../containers/TableList"
+import PhonebookForm from "../../containers/PhonebookForm"
+import PhonebookItem from "../../containers/PhonebookItem"
 export default function Layout (props) {
    
         return (
@@ -12,10 +12,9 @@ export default function Layout (props) {
             <React.Fragment>
                 <div className="layout">
                 <Header />
-                {!this.state.showAddForm && <AddButton toggle={this.toggleAddForm} />}
-                {this.state.showAddForm && <AddForm  />}
+                <PhonebookForm />
                 <SearchForm />
-                <TableList />
+                <PhonebookItem/>
                 </div>
             </React.Fragment>
         )

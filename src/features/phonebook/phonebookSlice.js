@@ -105,8 +105,8 @@ export const phonebookSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.
-            addCase(readPhonebook.pending, (state) => {
+        builder
+            .addCase(readPhonebook.pending, (state) => {
                 state.status = 'loading'
             })
             .addCase(readPhonebook.fulfilled, (state, action) => {
@@ -153,12 +153,14 @@ export const phonebookSlice = createSlice({
     }
 })
 
- const { create } = phonebookSlice.actions;
+const { create } = phonebookSlice.actions;
 
- export const selectPhonebooks = (state) => state.phonebook.phonebooks;
+export const selectPhonebooks = (state) => state.phonebook.phonebooks;
 
- export const createPhonebook = (name, phone) => (dispatch, getState) => {
+export const createPhonebook = (name, phone) => (dispatch, getState) => {
     const id = Date.now()
-    dispatch(create({id, name, phone}))
-    dispatch(createPhonebookAsync({id, name, phone}))
- }
+    dispatch(create({ id, name, phone }))
+    dispatch(createPhonebookAsync({ id, name, phone }))
+}
+
+export default phonebookSlice.reducer
