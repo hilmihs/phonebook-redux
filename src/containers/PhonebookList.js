@@ -6,7 +6,7 @@ import { loadPhonebook } from '../actions/phonebooks'
 import { readPhonebook, selectPhonebooks } from "../features/phonebook/phonebookSlice"
 import PhonebookItem from "./PhonebookItem"
 
-export default function TableList() {
+export default function PhonebookList() {
     const phonebooks = useSelector(selectPhonebooks)
     const dispatch = useDispatch()
 
