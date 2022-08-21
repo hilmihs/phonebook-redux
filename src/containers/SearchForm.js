@@ -1,6 +1,6 @@
 
 import { useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { readPhonebook } from '../features/phonebook/phonebookSlice';
 const SearchForm = () => {
   const dispatch = useDispatch();
@@ -16,12 +16,15 @@ const handleInputChange = (event) => {
 
     setPhonebook({
         ...phonebook,
-        [name]: value
+        [name]: event.target.value
     });
 
-    dispatch(readPhonebook({name: phonebook.name, phone: phonebook.phone}))
+    
 }
 
+useEffect(() => {
+  dispatch(readPhonebook({name: phonebook.name, phone: phonebook.phone}))
+}, [dispatch, phonebook])
 
     return (
         <div className="card card-shadow ">

@@ -9,6 +9,7 @@ router.get('/phonebooks/', async function (req, res, next) {
   const { name, phone } = req.query
   let wheres = {}
   let search = {}
+  
   if (req.query) {
     if (name) {
       search['name'] = { [Sequelize.Op.iLike]: '%' + name + '%'}
