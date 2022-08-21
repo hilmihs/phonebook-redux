@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef, useCallback, createRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { readPhonebook, selectPhonebooks } from "../features/phonebook/phonebookSlice"
 import PhonebookItem from "./PhonebookItem"
@@ -9,17 +9,28 @@ library.add(faSort, faSortUp, faSortDown)
 export default function PhonebookList() {
 
     let params = {
-        limit: 5,
-        offset: 0
+        limit: 10
     }
 
-    const phonebooks = useSelector(selectPhonebooks)
-
+    let phonebooks = useSelector(selectPhonebooks)
+    console.log(phonebooks)
     const dispatch = useDispatch()
 
     const [phonebook, setPhonebook] = useState({
         name: '',
         phone: ''
+    })
+
+    const [sortBy, setSortBy] = useState({
+        name: '',
+        phone: ''
+    })
+
+    const [pageNumber, setPageNumber] = useState(1)
+    const ref = createRef();
+    const observer = useRef()
+    const lastItemRef = useCallback(node => {
+        console.log(node)
     })
 
     const handleInputChange = (event) => {
@@ -32,20 +43,20 @@ export default function PhonebookList() {
             [name]: event.target.value
         });
     }
+    console.log(pageNumber)
 
     useEffect(() => {
-        params = {...params, name: phonebook.name, phone: phonebook.phone, sortName: sortBy.name, sortPhone: sortBy.phone }
+        params = {
+            ...params,
+            name: phonebook.name,
+            phone: phonebook.phone,
+            sortName: sortBy.name,
+            sortPhone: sortBy.phone,
+            offset: pageNumber === 1 ? 0 * params.limit : pageNumber - 1 * params.limit
+        }
+        console.log(params.offset, 'offset')
         dispatch(readPhonebook(params))
-    }, [dispatch, phonebook])
-
-    const [sortBy, setSortBy] = useState({
-        name: '',
-        phone: ''
-    })
-    useEffect(() => {
-        params = {...params, name: phonebook.name, phone: phonebook.phone, sortName: sortBy.name, sortPhone: sortBy.phone}
-        dispatch(readPhonebook(params))
-    }, [dispatch, sortBy])
+    }, [dispatch, sortBy, phonebook, pageNumber])
 
     const handleClickName = () => {
         setSortBy({
@@ -62,8 +73,23 @@ export default function PhonebookList() {
                     sortBy.phone === 'DESC' ? 'ASC' : 'DESC', name: ''
         })
     }
+
+    const handleScroll = () => {
+        let userScrollHeight = window.innerHeight + window.scrollY;
+        let windowBottomHeight = document.documentElement.offsetHeight;
+        if (userScrollHeight >= windowBottomHeight) {
+            console.log(phonebooks.length, 'length')
+      
+            setPageNumber(pageNumber => pageNumber + 1)
+            
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll); // attaching scroll event listener
+    }, []);
     return (
-        <div>
+        <div >
             <div className="card card-shadow ">
                 <div className="card-header card-position">
                     Search Form
@@ -75,18 +101,18 @@ export default function PhonebookList() {
                     <input type="text" id="phone" name="phone" className="form-control name-input" value={phonebook.phone} onChange={handleInputChange} placeholder="phone" />
                 </div>
             </div>
-            <table id="tabel_masuk" className="table table-hover table-striped table-list" >
+            <table id="tabel_masuk" className="table table-hover table-striped table-list" onScroll={handleScroll}>
                 <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nama<FontAwesomeIcon style={{ marginLeft: 10 }} onClick={handleClickName} icon={sortBy.name === 'ASC' ? "sort-up" : sortBy.name === 'DESC' ? "sort-down" : "sort"} /></th>
                         <th scope="col">Phone<FontAwesomeIcon style={{ marginLeft: 10 }} onClick={handleClickPhone} icon={sortBy.phone === 'ASC' ? "sort-up" : sortBy.phone === 'DESC' ? "sort-down" : "sort"} /></th>
-                        <th scope="col" colspan="2">Actions</th>
+                        <th scope="col" colSpan="2">Actions</th>
 
                     </tr>
                 </thead>
                 <tbody>
-                    {phonebooks.map((item, index) => <PhonebookItem
+                {phonebooks.map((item, index) => <PhonebookItem
                         key={item.id}
                         phonebook={item}
                         no={index + 1}

@@ -6,14 +6,14 @@ var models = require('../models/index')
 
 /* GET users listing. */
 router.get('/phonebooks/', async function (req, res, next) {
-  const { name, phone, sortName, sortPhone } = req.query
+  const { name, phone, sortName, sortPhone, limit, offset } = req.query
   let wheres = {}
   let search = {}
-let order = []
+  let order = []
 
   if (req.query) {
     if (name) {
-      search['name'] = { [Sequelize.Op.iLike]: '%' + name + '%'}
+      search['name'] = { [Sequelize.Op.iLike]: '%' + name + '%' }
     }
     if (phone) {
       search['phone'] = { [Sequelize.Op.iLike]: '%' + phone + '%' }
@@ -26,9 +26,19 @@ let order = []
     }
     wheres['where'] = search
   }
+
   if (order.length > 0) {
-   wheres['order'] = [order]   
+    wheres['order'] = [order]
   }
+
+  if (limit) {
+    wheres['limit'] = limit
+  }
+
+  if (offset) {
+    wheres['offset'] = offset
+  }
+
   console.log(wheres)
   try {
     const data = await models.Phonebook.findAll(wheres)

@@ -19,7 +19,6 @@ export const readPhonebook = createAsyncThunk(
     async (params) => {
         try {
             const { data } = await API.read(params);
-            console.log(data)
             if (data.status === 'SUCCESS') {
                 return data.data.map(item => {
                     item.sent = true
@@ -38,7 +37,7 @@ export const createPhonebookAsync = createAsyncThunk(
     CREATE_PHONEBOOK,
     async ({ id, name, phone }) => {
         try {
-            console.log(id, name, phone)
+
             const { data } = await API.create(name, phone);
             if (data.status === 'SUCCESS') {
                 return { id, phonebook: data.data }
@@ -82,7 +81,6 @@ export const removePhonebook = createAsyncThunk(
     async (id) => {
         try {
             const { data } = await API.remove(id);
-            console.log(data, 'delete')
             if (data.status === 'SUCCESS') {
                 return { id, phonebook: data.data }
             }
@@ -96,9 +94,7 @@ export const searchPhonebook = createAsyncThunk(
     SEARCH_PHONEBOOK,
     async (params) => {
         try {
-            console.log(params, 'params')
             const { data } = await API.search(params);
-            console.log(data)
             if (data.status === 'SUCCESS') {
                 return data.data.map(item => {
                     item.sent = true
@@ -141,7 +137,6 @@ export const phonebookSlice = createSlice({
             })
             .addCase(createPhonebookAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
-                console.log(state.phonebooks , action.payload, 'create dan payload')
                 if (action.payload.phonebook) {
                     state.phonebooks = state.phonebooks.map(item => {
                         if (item.id === action.payload.id) {
@@ -149,7 +144,6 @@ export const phonebookSlice = createSlice({
                         }
                         return item
                     })
-                    console.log(state.phonebooks, 'hasil akhir mapping')
                 } else {
                     state.phonebooks = state.phonebooks.map(item => {
                         if (item.id === action.payload.id) {
@@ -181,7 +175,6 @@ export const phonebookSlice = createSlice({
             })
             .addCase(removePhonebook.fulfilled, (state, action) => {
                 state.status = 'idle';
-                console.log(state.phonebooks, action.payload.id)
                 if (action.payload.phonebook) {
                     state.phonebooks = state.phonebooks.filter(item => item.id !== action.payload.id)
                 }

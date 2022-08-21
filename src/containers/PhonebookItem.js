@@ -25,7 +25,7 @@ export default function PhonebookItem (props) {
         dispatch(updatePhonebook({ id: props.phonebook.id, ...phonebook}))
         setIsEdit(false)
     }
-
+    
     if (isEdit) {
         return (
             <tr>

@@ -1,6 +1,8 @@
 import { request } from "../../utils/api";
 
-export const read = (params) => request.get(`phonebooks?${new URLSearchParams(params).toString()}`)
+export const read = (params) => request.get(`phonebooks?${new URLSearchParams(params).toString()}`, {
+    
+})
 
 export const create = (name, phone) => request.post('phonebooks', { name, phone })
 
