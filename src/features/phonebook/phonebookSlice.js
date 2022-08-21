@@ -137,7 +137,6 @@ export const phonebookSlice = createSlice({
             .addCase(readPhonebook.fulfilled, (state, action) => {
                     state.status = 'idle';
                     state.phonebooks = action.payload
-                    console.log(action.payload, 'payload', state.phonebooks, 'state phonebook =<')
                     
             })
             .addCase(createPhonebookAsync.fulfilled, (state, action) => {

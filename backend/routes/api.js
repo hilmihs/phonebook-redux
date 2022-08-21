@@ -6,10 +6,11 @@ var models = require('../models/index')
 
 /* GET users listing. */
 router.get('/phonebooks/', async function (req, res, next) {
-  const { name, phone } = req.query
+  const { name, phone, sortName, sortPhone } = req.query
   let wheres = {}
   let search = {}
-  
+let order = []
+
   if (req.query) {
     if (name) {
       search['name'] = { [Sequelize.Op.iLike]: '%' + name + '%'}
@@ -17,7 +18,16 @@ router.get('/phonebooks/', async function (req, res, next) {
     if (phone) {
       search['phone'] = { [Sequelize.Op.iLike]: '%' + phone + '%' }
     }
+    if (sortName) {
+      order.push('name', sortName)
+    }
+    if (sortPhone) {
+      order.push('phone', sortPhone)
+    }
     wheres['where'] = search
+  }
+  if (order.length > 0) {
+   wheres['order'] = [order]   
   }
   console.log(wheres)
   try {
