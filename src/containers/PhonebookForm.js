@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createPhonebook } from "../features/phonebook/phonebookSlice";
 import * as Icon from 'react-bootstrap-icons';
@@ -7,18 +7,11 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faPlus)
-const AddButton = () => {
-    return (
-        <button className="btn btn-primary add-button">
-        <FontAwesomeIcon icon='plus' /> add
-        </button>
-    )
-}
 
 export default function PhonebookForm() {
 
     const dispatch = useDispatch();
-    
+
     const [isAdd, setIsAdd] = useState(false)
     const [phonebook, setPhonebook] = useState({
         name: '',
@@ -35,7 +28,6 @@ export default function PhonebookForm() {
             [name]: value
         });
     }
-
     const handleSubmit = (event) => {
         event.preventDefault();
         dispatch(createPhonebook(phonebook.name, phonebook.phone))
@@ -43,26 +35,27 @@ export default function PhonebookForm() {
     }
 
     if (isAdd) {
-     return (  <form onSubmit={handleSubmit}>
-
-<div className="card card-shadow ">
+        return (
+            <form onSubmit={handleSubmit}>
+            <div className="card card-shadow ">
                 <div className="card-header card-position">
                     Adding Form
                 </div>
                 <div className="card-body card-position">
                     <label className="name-label" htmlFor="name">Name</label>
                     <input type="text" name="name" className="form-control name-input" value={phonebook.name} onChange={handleInputChange} placeholder="name" />
-                        <label className="name-label" htmlFor="phone">Phone</label>
-                        <input type="text" name="phone" className="form-control name-input" value={phonebook.phone} onChange={handleInputChange} placeholder="phone" />
-                            <button type="submit" className="btn btn-success green-button">
-                            <Icon.CheckCircle className='button-icon' />save
-                             </button>
-                            <button onClick={() => setIsAdd(false)} className="btn btn-primary orange-button">
-                            <Icon.XCircle className='button-icon' />  
-                             cancel</button>
-                        </div>
+                    <label className="name-label" htmlFor="phone">Phone</label>
+                    <input type="text" name="phone" className="form-control name-input" value={phonebook.phone} onChange={handleInputChange} placeholder="phone" />
+                    <button type="submit" className="btn btn-success green-button">
+                        <Icon.CheckCircle className='button-icon' />save
+                    </button>
+                    <button onClick={() => setIsAdd(false)} className="btn btn-primary orange-button">
+                        <Icon.XCircle className='button-icon' />
+                        cancel</button>
                 </div>
-        </form> )
+            </div>
+            </form>
+        )
     } else {
         return (
             <button className="btn btn-primary add-button" onClick={() => setIsAdd(true)}>

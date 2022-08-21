@@ -1,7 +1,5 @@
 import React, { useState } from "react"
 import { useDispatch } from 'react-redux';
-import * as Icon from 'react-bootstrap-icons';
-import { connect } from "react-redux"
 import { removePhonebook, resendPhonebook, updatePhonebook } from "../features/phonebook/phonebookSlice";
 
 export default function PhonebookItem (props) {

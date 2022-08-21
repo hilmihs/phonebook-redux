@@ -5,7 +5,8 @@ import {
     CREATE_PHONEBOOK,
     UPDATE_PHONEBOOK,
     REMOVE_PHONEBOOK,
-    RESEND_PHONEBOOK
+    RESEND_PHONEBOOK,
+    SEARCH_PHONEBOOK
 } from '../../utils/constants'
 
 const initialState = {
@@ -15,11 +16,11 @@ const initialState = {
 
 export const readPhonebook = createAsyncThunk(
     READ_PHONEBOOK,
-    async () => {
+    async (params) => {
         try {
-            const { data } = await API.read();
+            const { data } = await API.read(params);
             console.log(data)
-            if (data.status == 'SUCCESS') {
+            if (data.status === 'SUCCESS') {
                 return data.data.map(item => {
                     item.sent = true
                     return item
@@ -28,7 +29,7 @@ export const readPhonebook = createAsyncThunk(
                 return []
             }
         } catch (error) {
-            return [error]
+            return []
         }
     }
 );
@@ -39,7 +40,7 @@ export const createPhonebookAsync = createAsyncThunk(
         try {
             console.log(id, name, phone)
             const { data } = await API.create(name, phone);
-            if (data.status == 'SUCCESS') {
+            if (data.status === 'SUCCESS') {
                 return { id, phonebook: data.data }
             }
         } catch (error) {
@@ -53,7 +54,7 @@ export const resendPhonebook = createAsyncThunk(
     async ({ id, name, phone }) => {
         try {
             const { data } = await API.create(name, phone);
-            if (data.status == 'SUCCESS') {
+            if (data.status === 'SUCCESS') {
                 return { id, phonebook: data.data }
             }
         } catch (error) {
@@ -67,7 +68,7 @@ export const updatePhonebook = createAsyncThunk(
     async ({ id, name, phone }) => {
         try {
             const { data } = await API.update(id, name, phone);
-            if (data.status == 'SUCCESS') {
+            if (data.status === 'SUCCESS') {
                 return data.data
             }
         } catch (error) {
@@ -82,11 +83,32 @@ export const removePhonebook = createAsyncThunk(
         try {
             const { data } = await API.remove(id);
             console.log(data, 'delete')
-            if (data.status = 'SUCCESS') {
+            if (data.status === 'SUCCESS') {
                 return { id, phonebook: data.data }
             }
         } catch (error) {
             console.log(error, 'gagal')
+        }
+    }
+)
+
+export const searchPhonebook = createAsyncThunk(
+    SEARCH_PHONEBOOK,
+    async (params) => {
+        try {
+            console.log(params, 'params')
+            const { data } = await API.search(params);
+            console.log(data)
+            if (data.status === 'SUCCESS') {
+                return data.data.map(item => {
+                    item.sent = true
+                    return item
+                })
+            } else {
+                return []
+            }
+        } catch (error) {
+            return []
         }
     }
 )
@@ -145,6 +167,7 @@ export const phonebookSlice = createSlice({
                         if (item.id === action.payload.id) {
                             return { ...action.payload.phonebook, sent: true }
                         }
+                        return item
                     })
                 }
             })
