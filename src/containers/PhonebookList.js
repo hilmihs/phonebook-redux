@@ -64,7 +64,9 @@ export default function PhonebookList() {
         }
 
         dispatch(readPhonebook(params))
-        setIsLoading(false)
+        setTimeout(() => {
+            setIsLoading(false)
+        }, 1000)
     }, [dispatch, sortBy, phonebook, data])
 
     const handleClickName = () => {
@@ -89,6 +91,7 @@ export default function PhonebookList() {
         if (userScrollHeight + 1 >= windowBottomHeight) {
             setIsLoading(true)
             setData(data => data + 3)
+            
         }
     };
 
