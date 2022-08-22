@@ -5,15 +5,16 @@ import { readPhonebook, selectPhonebooks } from "../features/phonebook/phonebook
 import PhonebookItem from "./PhonebookItem"
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
+import load from '../../src/loading.gif'
 library.add(faSort, faSortUp, faSortDown)
 export default function PhonebookList() {
 
     let params = {
-        limit: 10
+        limit: 3
     }
 
     let phonebooks = useSelector(selectPhonebooks)
-    console.log(phonebooks)
+
     const dispatch = useDispatch()
 
     const [phonebook, setPhonebook] = useState({
@@ -27,11 +28,11 @@ export default function PhonebookList() {
     })
 
     const [pageNumber, setPageNumber] = useState(1)
-    const ref = createRef();
-    const observer = useRef()
-    const lastItemRef = useCallback(node => {
-        console.log(node)
-    })
+
+    const [error, setError] = useState(false)
+    const [hasMore, setHasMore] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
+    const [data, setData] = useState(3)
 
     const handleInputChange = (event) => {
         const target = event.target;
@@ -43,7 +44,14 @@ export default function PhonebookList() {
             [name]: event.target.value
         });
     }
-    console.log(pageNumber)
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll); // attaching scroll event listener
+
+    }, []);
+
+
+
 
     useEffect(() => {
         params = {
@@ -52,11 +60,12 @@ export default function PhonebookList() {
             phone: phonebook.phone,
             sortName: sortBy.name,
             sortPhone: sortBy.phone,
-            offset: pageNumber === 1 ? 0 * params.limit : pageNumber - 1 * params.limit
+            limit: data
         }
-        console.log(params.offset, 'offset')
+
         dispatch(readPhonebook(params))
-    }, [dispatch, sortBy, phonebook, pageNumber])
+        setIsLoading(false)
+    }, [dispatch, sortBy, phonebook, data])
 
     const handleClickName = () => {
         setSortBy({
@@ -74,20 +83,18 @@ export default function PhonebookList() {
         })
     }
 
-    const handleScroll = () => {
+    const handleScroll = (e) => {
         let userScrollHeight = window.innerHeight + window.scrollY;
         let windowBottomHeight = document.documentElement.offsetHeight;
-        if (userScrollHeight >= windowBottomHeight) {
-            console.log(phonebooks.length, 'length')
-      
-            setPageNumber(pageNumber => pageNumber + 1)
-            
+        if (userScrollHeight + 1 >= windowBottomHeight) {
+            setIsLoading(true)
+            setData(data => data + 3)
         }
     };
 
-    useEffect(() => {
-        window.addEventListener("scroll", handleScroll); // attaching scroll event listener
-    }, []);
+    console.log(isLoading)
+
+
     return (
         <div >
             <div className="card card-shadow ">
@@ -112,7 +119,7 @@ export default function PhonebookList() {
                     </tr>
                 </thead>
                 <tbody>
-                {phonebooks.map((item, index) => <PhonebookItem
+                    {phonebooks.map((item, index) => <PhonebookItem
                         key={item.id}
                         phonebook={item}
                         no={index + 1}
@@ -121,6 +128,9 @@ export default function PhonebookList() {
                     )}
                 </tbody>
             </table>
+            <div className="image-container">  
+                    { isLoading && <img style={{width: 25}} src={load}></img> }
+            </div>
         </div>
     )
 }

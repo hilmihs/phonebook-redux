@@ -42,9 +42,11 @@ router.get('/phonebooks/', async function (req, res, next) {
   console.log(wheres)
   try {
     const data = await models.Phonebook.findAll(wheres)
+    const amount = await models.Phonebook.count(wheres)
     res.json(new Response(data))
   } catch (e) {
     res.status(500).json(new Response(e, "UNSUCCESFUL"))
+    console.log(e)
   }
 
 
