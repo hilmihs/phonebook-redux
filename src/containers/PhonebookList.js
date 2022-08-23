@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import React, { useEffect, useState, useRef, useCallback, createRef } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { readPhonebook, selectPhonebooks } from "../features/phonebook/phonebookSlice"
 import PhonebookItem from "./PhonebookItem"
@@ -27,10 +27,6 @@ export default function PhonebookList() {
         phone: ''
     })
 
-    const [pageNumber, setPageNumber] = useState(1)
-
-    const [error, setError] = useState(false)
-    const [hasMore, setHasMore] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
     const [data, setData] = useState(3)
 
@@ -41,7 +37,7 @@ export default function PhonebookList() {
 
         setPhonebook({
             ...phonebook,
-            [name]: event.target.value
+            [name]: value
         });
     }
 
@@ -62,8 +58,10 @@ export default function PhonebookList() {
             sortPhone: sortBy.phone,
             limit: data
         }
-
-        dispatch(readPhonebook(params))
+        setTimeout(() => {
+            dispatch(readPhonebook(params))
+        }, 1000)
+        
         setTimeout(() => {
             setIsLoading(false)
         }, 1000)
@@ -132,7 +130,7 @@ export default function PhonebookList() {
                 </tbody>
             </table>
             <div className="image-container">  
-                    { isLoading && <img style={{width: 25}} src={load}></img> }
+                    { isLoading && <img style={{width: 25}} alt="loading icon" src={load}></img> }
             </div>
         </div>
     )
